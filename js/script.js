@@ -5,8 +5,7 @@ const MAX_SCORE = 3;
 let playerScore = 0;
 let computerScore = 0;
 
-// Variables for computer and player choice
-let computerSelection = getComputerChoice();
+// Variables player choice
 let playerSelection = getPlayerChoice();
 
 // Variables for containers in UI for game, form and winner popup, check index.html for classes
@@ -56,7 +55,12 @@ const displayWinnerPopup = () => {
 // Changes VS to winner of round
 function displayWinnerRound(winner) {
   let winnerDisplay = document.querySelector(".main__middle-container-vs");
-  winnerDisplay.innerText = winner;
+  winnerDisplay.innerHTML = `<h2>${winner} wins this round !!!</h2>`;
+
+  //Show winner for 3 secs
+  setTimeout(() => {
+    winnerDisplay.innerHTML = `<h2>VS</h2>`;
+  }, 3000);
 }
 
 // Updates score on UI
@@ -75,6 +79,8 @@ const updateScore = () => {
 
 // Logic for determining round winner, returns string ( player, computer or tie )
 const determineRoundWinner = (player, computer) => {
+  let playerName = getPlayerName();
+
   if (player === computer) {
     return "tie";
   } else if (
@@ -82,7 +88,7 @@ const determineRoundWinner = (player, computer) => {
     (player === "scissors" && computer === "paper") ||
     (player === "paper" && computer === "rock")
   ) {
-    return "player";
+    return playerName;
   } else {
     return "computer";
   }
@@ -95,12 +101,13 @@ const hasWonGame = () => {
 
 // Checking for win Round, if true, updates score and false returns string "tie"
 const hasWonRound = (winner) => {
-  if (winner === "player") {
+  let playerName = getPlayerName();
+  if (winner === playerName) {
     playerScore++;
   } else if (winner === "computer") {
     computerScore++;
   } else {
-    return "tie";
+    return winner === "tie";
   }
   displayWinnerRound(winner);
   updateScore();
@@ -130,9 +137,7 @@ function getComputerChoice() {
 // Fetching player name and returns string with name
 function getPlayerName() {
   let playerName = document.querySelector(".main__form-container-input").value;
-  if (playerName === "") {
-    playerName = "Du skrev inget namn, mupp";
-  }
+  playerName === "" ? (playerName = "Player") : (playerName = playerName);
   return playerName;
 }
 
@@ -151,7 +156,7 @@ function getPlayerChoice() {
       handlePlayerChoice(playerSelection);
     });
   document
-    .querySelector(".main_middle-container-option.scissor.btn")
+    .querySelector(".main_middle-container-option.scissors.btn")
     .addEventListener("click", () => {
       playerSelection = "scissors";
       handlePlayerChoice(playerSelection);
@@ -160,6 +165,11 @@ function getPlayerChoice() {
 
 // Function for handling player choice, sends choice to playRound
 function handlePlayerChoice(choice) {
+  let computerSelection = getComputerChoice();
   playerSelection = choice;
+
   playRound(playerSelection, computerSelection);
+
+  console.log("Player choice: " + playerSelection);
+  console.log("Computer choice: " + computerSelection);
 }
