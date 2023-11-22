@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="./css/style.css"
+    />
+    <!-- FONT AWESOME-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <title>Sten Sax Påse | Kevin Lagergren</title>
+  </head>
+  <body>
+    <header>
+      <figure class="header__image-container">
+        <i class="fa-regular fa-hand-back-fist"></i>
+        <i class="fa-regular fa-hand"></i>
+        <i class="fa-regular fa-hand-scissors"></i>
+      </figure>
+      <div class="header__title">
+        <h1>Sten Sax Påse</h1>
+      </div>
+    </header>
+    <main>
+      <div class="main__form-container">
+        <!-- Formulär för att starta spelet -->
+        <form>
+          <input
+            type="text"
+            placeholder="Skriv ditt namn"
+            class="main__form-container-input"
+          />
+          <button
+            class="main__form-container-button btn"
+            type="submit"
+          >
+            Starta spelet
+          </button>
+        </form>
+      </div>
+
+      <div class="main__game-container">
+        <div class="main__top-container">
+          <div class="main__top-container-player">
+            <h2 class="main__top-player-name"></h2>
+            <h2 class="main__top-container-player-points">0</h2>
+          </div>
+          <div class="main__top-container-to-three">
+            <h2>Bäst av tre</h2>
+          </div>
+          <div class="main__top-container-computer">
+            <h2>Dator</h2>
+            <h2 class="main__top-container-computer-points">0</h2>
+          </div>
+        </div>
+        <div class="main__middle-container">
+          <div class="main__middle-container-choices">
+            <button class="main_middle-container-option rock btn">Sten</button>
+            <button class="main_middle-container-option scissor btn">
+              Sax
+            </button>
+            <button class="main_middle-container-option paper btn">Påse</button>
+          </div>
+          <div class="main__middle-container-vs"><h2>VS</h2></div>
+          <div class="main__middle-container-choices">
+            <button
+              class="main_middle-container-option rock btn"
+              disabled
+            >
+              Sten
+            </button>
+            <button
+              class="main_middle-container-option scissor btn"
+              disabled
+            >
+              Sax
+            </button>
+            <button
+              class="main_middle-container-option paper btn"
+              disabled
+            >
+              Påse
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="main__middle-popup-container">
+        <h2 class="main__middle-popup-winner"></h2>
+        <button class="main_middle-popup-container-button btn">
+          Spela igen
+        </button>
+      </div>
+    </main>
+    <aside>
+      <div class="aside__rules-container">
+        <h2>Regler</h2>
+        <p>Sten slår sax</p>
+        <p>Sax slår påse</p>
+        <p>Påse slår sten</p>
+      </div>
+    </aside>
+
+    <footer>
+      <p>Kevin Lagergren</p>
+    </footer>
+
+    <script src="./js/script.js"></script>
+  </body>
+</html>
