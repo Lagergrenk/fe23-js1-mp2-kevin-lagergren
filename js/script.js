@@ -48,7 +48,7 @@ const displayWinnerPopup = () => {
   winnerPopup.style.display = "flex";
 
   playerScore > computerScore
-    ? (gameWinnerDisplay.innerText = `${getPlayerName()} wins!`)
+    ? (gameWinnerDisplay.innerText = `${playerName} wins!`)
     : (gameWinnerDisplay.innerText = "Computer wins!");
 
   playAgain();
@@ -56,17 +56,15 @@ const displayWinnerPopup = () => {
 
 // Changes VS to winner of round
 function displayWinnerRound(winner) {
-  let winnerDisplay = document.querySelector(".main__middle-container-vs");
-  if (winner === "Player" || winner ==="Computer") {
-    winnerDisplay.innerHTML = `<h2>${winner} wins this round !!!</h2>`;
-  }
-  else{
-    winnerDisplay.innerHTML = `<h2>It's a tie !!!</h2>`;
-  }
+  console.log(winner);
+  winner == "Tie"
+    ? (roundWinnerDisplay.innerHTML = "<h2>It is a tie !!!</h2>")
+    : (roundWinnerDisplay.innerHTML = `<h2>${winner} wins this round !!!</h2>`);
+    
 
   //Show winner for 3 secs
   setTimeout(() => {
-    winnerDisplay.innerHTML = `<h2>VS</h2>`;
+    roundWinnerDisplay.innerHTML = `<h2>VS</h2>`;
   }, 3000);
 }
 
@@ -113,15 +111,13 @@ const hasWonRound = (winner) => {
     playerScore++;
   } else if (winner === "Computer") {
     computerScore++;
-  } else {
-    return winner === "Tie";
   }
   displayWinnerRound(winner);
   updateScore();
 };
 
-const playRound = (player, computer) => {
-  let winner = determineRoundWinner(player, computer);
+function playRound(player, computer)  {
+  const winner = determineRoundWinner(player, computer);
   hasWonRound(winner);
   if (hasWonGame()) {
     displayWinnerPopup();
@@ -129,7 +125,9 @@ const playRound = (player, computer) => {
 };
 
 function playAgain() {
-  let playAgainButton = document.querySelector(".main_middle-popup-container-button.btn");
+  let playAgainButton = document.querySelector(
+    ".main_middle-popup-container-button.btn"
+  );
   playAgainButton.addEventListener("click", () => {
     resetGame();
   });
@@ -152,7 +150,9 @@ function getComputerChoice() {
 
 // Fetching player name and returns string with name
 function getPlayerName() {
-  let playerNameInput = document.querySelector(".main__form-container-input").value;
+  let playerNameInput = document.querySelector(
+    ".main__form-container-input"
+  ).value;
   return playerNameInput || "Player";
 }
 
@@ -184,7 +184,4 @@ function handlePlayerChoice(choice) {
   playerSelection = choice;
 
   playRound(playerSelection, computerSelection);
-
-  console.log("Player choice: " + playerSelection);
-  console.log("Computer choice: " + computerSelection);
 }
