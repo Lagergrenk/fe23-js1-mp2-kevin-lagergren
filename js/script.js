@@ -1,17 +1,18 @@
 // Max Score for game, can be changed to any number
 const MAX_SCORE = 3;
 
-// Global Variables for score for player and computer aka scoreboard
+// Global Variables
 let playerScore = 0;
 let computerScore = 0;
-
-// Variables player choice
-let playerSelection = getPlayerChoice();
+let playerSelection = null;
+let playerName = "";
 
 // Variables for containers in UI for game, form and winner popup, check index.html for classes
-let gameContainer = document.querySelector(".main__game-container");
-let formContainer = document.querySelector(".main__form-container");
-let winnerPopup = document.querySelector(".main__middle-popup-container");
+const gameContainer = document.querySelector(".main__game-container");
+const formContainer = document.querySelector(".main__form-container");
+const winnerPopup = document.querySelector(".main__middle-popup-container");
+const roundWinnerDisplay = document.querySelector(".main__middle-container-vs");
+const gameWinnerDisplay = document.querySelector(".main__middle-popup-winner");
 
 // Event listener for start game
 const startGameButton = document.querySelector(".main__form-container-button");
@@ -26,30 +27,29 @@ function startGame() {
   let playerName = getPlayerName();
   let playerNameDisplay = document.querySelector(".main__top-player-name");
   playerNameDisplay.innerText = playerName;
-  displayGame();
+  displayElement(gameContainer);
+  hideElement(formContainer);
+  playerSelection = getPlayerChoice();
 }
 
 // --------------------- UI functions ---------------------
-const displayGame = () => {
-  gameContainer.style.display = "block";
-  hideForm();
-};
+function displayElement(element) {
+  element.style.display = "block";
+}
 
-const hideGame = () => (gameContainer.style.display = "none");
-
-const displayForm = () => (formContainer.style.display = "block");
-
-const hideForm = () => (formContainer.style.display = "none");
+function hideElement(element) {
+  element.style.display = "none";
+}
 
 // Displays winner popup
 const displayWinnerPopup = () => {
-  hideGame();
+  hideElement(gameContainer);
+  displayElement(winnerPopup);
   winnerPopup.style.display = "flex";
-  let winner = document.querySelector(".main__middle-popup-winner");
 
   playerScore > computerScore
-    ? (winner.innerText = `${getPlayerName()} wins!`)
-    : (winner.innerText = "Computer wins!");
+    ? (gameWinnerDisplay.innerText = `${getPlayerName()} wins!`)
+    : (gameWinnerDisplay.innerText = "Computer wins!");
 
   playAgain();
 };
@@ -57,9 +57,10 @@ const displayWinnerPopup = () => {
 // Changes VS to winner of round
 function displayWinnerRound(winner) {
   let winnerDisplay = document.querySelector(".main__middle-container-vs");
-  winnerDisplay.innerHTML = `<h2>${winner} wins this round !!!</h2>`;
-
-  if (winner === "Tie") {
+  if (winner === "Player" || winner ==="Computer") {
+    winnerDisplay.innerHTML = `<h2>${winner} wins this round !!!</h2>`;
+  }
+  else{
     winnerDisplay.innerHTML = `<h2>It's a tie !!!</h2>`;
   }
 
@@ -131,7 +132,6 @@ function playAgain() {
   let playAgainButton = document.querySelector(".main_middle-popup-container-button.btn");
   playAgainButton.addEventListener("click", () => {
     resetGame();
-    displayForm();
   });
 }
 
@@ -139,7 +139,9 @@ function playAgain() {
 const resetGame = () => {
   playerScore = 0;
   computerScore = 0;
-  winnerPopup.style.display = "none";
+  updateScore();
+  hideElement(winnerPopup);
+  displayElement(formContainer);
 };
 
 // Computers Choice Function Returns String ( rock, paper or scissors )
@@ -150,9 +152,8 @@ function getComputerChoice() {
 
 // Fetching player name and returns string with name
 function getPlayerName() {
-  let playerName = document.querySelector(".main__form-container-input").value;
-  playerName === "" ? (playerName = "Player") : (playerName = playerName);
-  return playerName;
+  let playerNameInput = document.querySelector(".main__form-container-input").value;
+  return playerNameInput || "Player";
 }
 
 //Fetching player choice and sends choice to handlePlayerChoice
