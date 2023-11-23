@@ -1,7 +1,7 @@
 // Max Score for game, can be changed to any number
 const MAX_SCORE = 3;
 
-// Global Variables for score for player and computer
+// Global Variables for score for player and computer aka scoreboard
 let playerScore = 0;
 let computerScore = 0;
 
@@ -50,12 +50,18 @@ const displayWinnerPopup = () => {
   playerScore > computerScore
     ? (winner.innerText = `${getPlayerName()} wins!`)
     : (winner.innerText = "Computer wins!");
+
+  playAgain();
 };
 
 // Changes VS to winner of round
 function displayWinnerRound(winner) {
   let winnerDisplay = document.querySelector(".main__middle-container-vs");
   winnerDisplay.innerHTML = `<h2>${winner} wins this round !!!</h2>`;
+
+  if (winner === "Tie") {
+    winnerDisplay.innerHTML = `<h2>It's a tie !!!</h2>`;
+  }
 
   //Show winner for 3 secs
   setTimeout(() => {
@@ -82,7 +88,7 @@ const determineRoundWinner = (player, computer) => {
   let playerName = getPlayerName();
 
   if (player === computer) {
-    return "tie";
+    return "Tie";
   } else if (
     (player === "rock" && computer === "scissors") ||
     (player === "scissors" && computer === "paper") ||
@@ -90,11 +96,11 @@ const determineRoundWinner = (player, computer) => {
   ) {
     return playerName;
   } else {
-    return "computer";
+    return "Computer";
   }
 };
 
-// Checking for win Game Returns Boolean
+// Checking for win player or computer, returns true if points = max_score Returns false if not
 const hasWonGame = () => {
   return playerScore === MAX_SCORE || computerScore === MAX_SCORE;
 };
@@ -104,10 +110,10 @@ const hasWonRound = (winner) => {
   let playerName = getPlayerName();
   if (winner === playerName) {
     playerScore++;
-  } else if (winner === "computer") {
+  } else if (winner === "Computer") {
     computerScore++;
   } else {
-    return winner === "tie";
+    return winner === "Tie";
   }
   displayWinnerRound(winner);
   updateScore();
@@ -120,6 +126,14 @@ const playRound = (player, computer) => {
     displayWinnerPopup();
   }
 };
+
+function playAgain() {
+  let playAgainButton = document.querySelector(".main_middle-popup-container-button.btn");
+  playAgainButton.addEventListener("click", () => {
+    resetGame();
+    displayForm();
+  });
+}
 
 // Reset Game Function
 const resetGame = () => {
