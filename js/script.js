@@ -7,12 +7,15 @@ let computerScore = 0;
 let playerSelection = null;
 let playerName = "";
 
-// Variables for containers in UI for game, form and winner popup, check index.html for classes
+// Variables for containers in UI for game check index.html for classes
 const gameContainer = document.querySelector(".main__game-container");
 const formContainer = document.querySelector(".main__form-container");
 const winnerPopup = document.querySelector(".main__middle-popup-container");
 const roundWinnerDisplay = document.querySelector(".main__middle-container-vs");
 const gameWinnerDisplay = document.querySelector(".main__middle-popup-winner");
+const playerScoreDisplay = document.querySelector(".main__top-container-player-points");
+const computerScoreDisplay = document.querySelector(".main__top-container-computer-points");
+const playAgainButton = document.querySelector(".main_middle-popup-container-button.btn");
 
 // Event listener for start game
 const startGameButton = document.querySelector(".main__form-container-button");
@@ -48,7 +51,7 @@ const displayWinnerPopup = () => {
   winnerPopup.style.display = "flex";
 
   playerScore > computerScore
-    ? (gameWinnerDisplay.innerText = `${playerName} wins!`)
+    ? (gameWinnerDisplay.innerText = `${getPlayerName()} wins!`)
     : (gameWinnerDisplay.innerText = "Computer wins!");
 
   playAgain();
@@ -56,11 +59,9 @@ const displayWinnerPopup = () => {
 
 // Changes VS to winner of round
 function displayWinnerRound(winner) {
-  console.log(winner);
   winner == "Tie"
     ? (roundWinnerDisplay.innerHTML = "<h2>It is a tie !!!</h2>")
     : (roundWinnerDisplay.innerHTML = `<h2>${winner} wins this round !!!</h2>`);
-    
 
   //Show winner for 3 secs
   setTimeout(() => {
@@ -70,12 +71,6 @@ function displayWinnerRound(winner) {
 
 // Updates score on UI
 const updateScore = () => {
-  let playerScoreDisplay = document.querySelector(
-    ".main__top-container-player-points"
-  );
-  let computerScoreDisplay = document.querySelector(
-    ".main__top-container-computer-points"
-  );
   playerScoreDisplay.innerText = playerScore;
   computerScoreDisplay.innerText = computerScore;
 };
@@ -100,12 +95,12 @@ const determineRoundWinner = (player, computer) => {
 };
 
 // Checking for win player or computer, returns true if points = max_score Returns false if not
-const hasWonGame = () => {
+function hasWonGame() {
   return playerScore === MAX_SCORE || computerScore === MAX_SCORE;
-};
+}
 
 // Checking for win Round, if true, updates score and false returns string "tie"
-const hasWonRound = (winner) => {
+function hasWonRound(winner) {
   let playerName = getPlayerName();
   if (winner === playerName) {
     playerScore++;
@@ -114,33 +109,31 @@ const hasWonRound = (winner) => {
   }
   displayWinnerRound(winner);
   updateScore();
-};
+}
 
-function playRound(player, computer)  {
+function playRound(player, computer) {
   const winner = determineRoundWinner(player, computer);
   hasWonRound(winner);
   if (hasWonGame()) {
     displayWinnerPopup();
   }
-};
+}
 
+// PLay again
 function playAgain() {
-  let playAgainButton = document.querySelector(
-    ".main_middle-popup-container-button.btn"
-  );
   playAgainButton.addEventListener("click", () => {
     resetGame();
   });
 }
 
 // Reset Game Function
-const resetGame = () => {
+function resetGame() {
   playerScore = 0;
   computerScore = 0;
   updateScore();
   hideElement(winnerPopup);
   displayElement(formContainer);
-};
+}
 
 // Computers Choice Function Returns String ( rock, paper or scissors )
 function getComputerChoice() {
