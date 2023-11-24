@@ -47,15 +47,19 @@ function hideElement(element) {
   element.style.display = "none";
 }
 
-function createH2Element(parent, text) {
+function createH2Element(parent, text, className) {
   let h2 = document.createElement("h2");
   h2.innerText = text;
+  h2.className = className;
   parent.appendChild(h2);
   return h2;
 }
-function removeH2Element(parent) {
-  parent.removeChild(parent.lastChild);
+
+function removeH2Element(parent, className) {
+  let h2 = document.querySelector(`.${className}`);
+  parent.removeChild(h2);
 }
+
 
 // Displays winner popup
 const displayWinnerPopup = () => {
@@ -64,8 +68,8 @@ const displayWinnerPopup = () => {
   winnerPopup.style.display = "flex";
 
   playerScore > computerScore
-    ? createH2Element(winnerPopup, `${playerName} wins!`)
-    : createH2Element(winnerPopup, "Computer wins!");
+    ? createH2Element(winnerPopup, `${playerName} wins!`, "winner")
+    : createH2Element(winnerPopup, "Computer wins!" , "winner");
 
   playAgain();
 };
@@ -131,7 +135,7 @@ function playRound(player, computer) {
 function playAgain() {
   playAgainButton.addEventListener("click", () => {
     resetGame();
-    removeH2Element(winnerPopup);
+    removeH2Element(winnerPopup, "winner");
   });
 }
 

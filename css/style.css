@@ -100,15 +100,13 @@ form input[type="text"] {
   display: flex;
   justify-content: right;
 }
-.main__middle-popup-container {
-  display: none;
-}
+
 .main__middle-container-choices {
   flex-direction: column;
 }
 .main__middle-popup-container {
   display: none;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: center;
   align-items: center;
 }
