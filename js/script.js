@@ -53,6 +53,9 @@ function createH2Element(parent, text) {
   parent.appendChild(h2);
   return h2;
 }
+function removeH2Element(parent) {
+  parent.removeChild(parent.lastChild);
+}
 
 // Displays winner popup
 const displayWinnerPopup = () => {
@@ -128,6 +131,7 @@ function playRound(player, computer) {
 function playAgain() {
   playAgainButton.addEventListener("click", () => {
     resetGame();
+    removeH2Element(winnerPopup);
   });
 }
 
