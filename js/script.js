@@ -55,9 +55,9 @@ function createH2Element(parent, text, className) {
   return h2;
 }
 
-function removeH2Element(parent, className) {
-  let h2 = document.querySelector(`.${className}`);
-  parent.removeChild(h2);
+function removeElement(className) {
+  let element = document.querySelector(`.${className}`);
+  element.remove();
 }
 
 
@@ -135,7 +135,7 @@ function playRound(player, computer) {
 function playAgain() {
   playAgainButton.addEventListener("click", () => {
     resetGame();
-    removeH2Element(winnerPopup, "winner");
+    removeElement("winner");
   });
 }
 
