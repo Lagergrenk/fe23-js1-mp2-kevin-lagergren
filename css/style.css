@@ -24,14 +24,39 @@ header {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  background-color:  #e0e0e0;
+}
+
+.header__title h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.header__image-container i {
+  font-size: 1.5rem;
+  margin: 5px;
 }
 
 main {
   grid-area: main;
+  min-width: 700px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.active {
-  background-color: #000000;
+form input[type="text"] {
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .btn {
@@ -45,22 +70,23 @@ main {
   color: #f5f5f5;
   transition: ease-in-out 0.3s;
 }
-.main_middle-container-option {
+.main__middle-container-option {
   width: 200px;
   height: 200px;
 }
 
+
 .main__form-container {
   display: flex;
   justify-content: center;
+
 }
 .main__game-container {
   display: none;
 }
 .main__top-container,
 .main__middle-container,
-.main__middle-container-choices
-{
+.main__middle-container-choices {
   display: flex;
   justify-content: space-between;
 }
@@ -98,8 +124,30 @@ form {
 
 aside {
   grid-area: aside;
+  display: flex;
+  justify-content: center;
 }
 
 footer {
   grid-area: footer;
+  background-color: #e0e0e0;
+  text-align: center;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "header"
+      "main"
+      "aside"
+      "footer";
+  }
+
+  main, aside {
+    max-width: 100%;
+    padding: 10px;
+  }
 }

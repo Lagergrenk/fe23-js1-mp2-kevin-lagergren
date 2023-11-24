@@ -12,7 +12,6 @@ const gameContainer = document.querySelector(".main__game-container");
 const formContainer = document.querySelector(".main__form-container");
 const winnerPopup = document.querySelector(".main__middle-popup-container");
 const roundVsDisplay = document.querySelector(".main__middle-container-vs");
-const gameWinnerDisplay = document.querySelector(".main__middle-popup-winner");
 const playerScoreDisplay = document.querySelector(
   ".main__top-container-player-points"
 );
@@ -62,13 +61,13 @@ const displayWinnerPopup = () => {
   winnerPopup.style.display = "flex";
 
   playerScore > computerScore
-    ? (gameWinnerDisplay.innerText = `${getPlayerName()} wins!`)
-    : (gameWinnerDisplay.innerText = "Computer wins!");
+    ? createH2Element(winnerPopup, `${playerName} wins!`)
+    : createH2Element(winnerPopup, "Computer wins!");
 
   playAgain();
 };
 function playerSelectionVSComputerSelection(player, computer) {
-  roundVsDisplay.innerHTML = `<h2>${playerName} : ${player} VS Computer : ${computer}</h2>`;
+  roundVsDisplay.innerHTML = `<h2><-- ${player} VS ${computer} --></h2>`;
 }
 
 // Changes VS to winner of round
