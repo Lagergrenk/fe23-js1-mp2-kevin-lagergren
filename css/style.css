@@ -59,9 +59,17 @@ main {
 }
 .main__top-container,
 .main__middle-container,
-.main__middle-container-choices {
+.main__middle-container-choices
+{
   display: flex;
   justify-content: space-between;
+}
+
+.main__middle-container-vs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .main__top-container-computer-points {

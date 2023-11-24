@@ -11,11 +11,18 @@ let playerName = "";
 const gameContainer = document.querySelector(".main__game-container");
 const formContainer = document.querySelector(".main__form-container");
 const winnerPopup = document.querySelector(".main__middle-popup-container");
-const roundWinnerDisplay = document.querySelector(".main__middle-container-vs");
+const roundVsDisplay = document.querySelector(".main__middle-container-vs");
 const gameWinnerDisplay = document.querySelector(".main__middle-popup-winner");
-const playerScoreDisplay = document.querySelector(".main__top-container-player-points");
-const computerScoreDisplay = document.querySelector(".main__top-container-computer-points");
-const playAgainButton = document.querySelector(".main_middle-popup-container-button.btn");
+const playerScoreDisplay = document.querySelector(
+  ".main__top-container-player-points"
+);
+const playerNameDisplay = document.querySelector(".main__top-player-name");
+const computerScoreDisplay = document.querySelector(
+  ".main__top-container-computer-points"
+);
+const playAgainButton = document.querySelector(
+  ".main_middle-popup-container-button.btn"
+);
 
 // Event listener for start game
 const startGameButton = document.querySelector(".main__form-container-button");
@@ -26,13 +33,10 @@ startGameButton.addEventListener("click", (event) => {
 
 // Function for starting game, hides form and displays game
 function startGame() {
-  console.log("Started game");
-  let playerName = getPlayerName();
-  let playerNameDisplay = document.querySelector(".main__top-player-name");
+  playerName = getPlayerName();
   playerNameDisplay.innerText = playerName;
   displayElement(gameContainer);
   hideElement(formContainer);
-  playerSelection = getPlayerChoice();
 }
 
 // --------------------- UI functions ---------------------
@@ -42,6 +46,13 @@ function displayElement(element) {
 
 function hideElement(element) {
   element.style.display = "none";
+}
+
+function createH2Element(parent, text) {
+  let h2 = document.createElement("h2");
+  h2.innerText = text;
+  parent.appendChild(h2);
+  return h2;
 }
 
 // Displays winner popup
@@ -56,17 +67,15 @@ const displayWinnerPopup = () => {
 
   playAgain();
 };
+function playerSelectionVSComputerSelection(player, computer) {
+  roundVsDisplay.innerHTML = `<h2>${playerName} : ${player} VS Computer : ${computer}</h2>`;
+}
 
 // Changes VS to winner of round
 function displayWinnerRound(winner) {
   winner == "Tie"
-    ? (roundWinnerDisplay.innerHTML = "<h2>It is a tie !!!</h2>")
-    : (roundWinnerDisplay.innerHTML = `<h2>${winner} wins this round !!!</h2>`);
-
-  //Show winner for 3 secs
-  setTimeout(() => {
-    roundWinnerDisplay.innerHTML = `<h2>VS</h2>`;
-  }, 3000);
+    ? createH2Element(roundVsDisplay, "It is a tie !!!")
+    : createH2Element(roundVsDisplay, `${winner} wins this round !!!`);
 }
 
 // Updates score on UI
@@ -79,8 +88,6 @@ const updateScore = () => {
 
 // Logic for determining round winner, returns string ( player, computer or tie )
 const determineRoundWinner = (player, computer) => {
-  let playerName = getPlayerName();
-
   if (player === computer) {
     return "Tie";
   } else if (
@@ -101,7 +108,6 @@ function hasWonGame() {
 
 // Checking for win Round, if true, updates score and false returns string "tie"
 function hasWonRound(winner) {
-  let playerName = getPlayerName();
   if (winner === playerName) {
     playerScore++;
   } else if (winner === "Computer") {
@@ -133,6 +139,7 @@ function resetGame() {
   updateScore();
   hideElement(winnerPopup);
   displayElement(formContainer);
+  roundVsDisplay.innerHTML = "";
 }
 
 // Computers Choice Function Returns String ( rock, paper or scissors )
@@ -151,30 +158,27 @@ function getPlayerName() {
 
 //Fetching player choice and sends choice to handlePlayerChoice
 function getPlayerChoice() {
-  document
-    .querySelector(".main_middle-container-option.rock.btn")
-    .addEventListener("click", () => {
-      playerSelection = "rock";
-      handlePlayerChoice(playerSelection);
-    });
-  document
-    .querySelector(".main_middle-container-option.paper.btn")
-    .addEventListener("click", () => {
-      playerSelection = "paper";
-      handlePlayerChoice(playerSelection);
-    });
-  document
-    .querySelector(".main_middle-container-option.scissors.btn")
-    .addEventListener("click", () => {
-      playerSelection = "scissors";
-      handlePlayerChoice(playerSelection);
-    });
+  document.querySelector(".rock.btn").addEventListener("click", () => {
+    playerSelection = "rock";
+    handlePlayerChoice(playerSelection);
+  });
+  document.querySelector(".paper.btn").addEventListener("click", () => {
+    playerSelection = "paper";
+    handlePlayerChoice(playerSelection);
+  });
+  document.querySelector(".scissors.btn").addEventListener("click", () => {
+    playerSelection = "scissors";
+    handlePlayerChoice(playerSelection);
+  });
 }
 
 // Function for handling player choice, sends choice to playRound
 function handlePlayerChoice(choice) {
   let computerSelection = getComputerChoice();
   playerSelection = choice;
-
+  playerSelectionVSComputerSelection(playerSelection, computerSelection);
   playRound(playerSelection, computerSelection);
 }
+
+// Event listener for DOMContentLoaded to start game when page is loaded
+document.addEventListener("DOMContentLoaded", getPlayerChoice);
