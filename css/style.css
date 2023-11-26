@@ -13,7 +13,7 @@ body {
   grid-template-rows: 0.5fr 3fr 0.5fr;
   grid-template-areas:
     ". header ."
-    "aside main ."
+    ". main ."
     ". footer .";
 }
 
@@ -25,7 +25,7 @@ header {
   align-items: center;
   flex-direction: column;
 
-  background-color:  #e0e0e0;
+  background-color: #e0e0e0;
 }
 
 .header__title h1 {
@@ -53,8 +53,6 @@ form input[type="text"] {
   border-radius: 5px;
 }
 
-
-
 .btn {
   border-radius: 5px;
   background-color: #f5f5f538;
@@ -69,15 +67,13 @@ form input[type="text"] {
   transition: ease-in-out 0.3s;
 }
 .main__middle-container-option {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
 }
-
 
 .main__form-container {
   display: flex;
   justify-content: center;
-
 }
 .main__game-container {
   display: none;
@@ -104,6 +100,19 @@ form input[type="text"] {
 .main__middle-container-choices {
   flex-direction: column;
 }
+.rock {
+  border: 5px solid #708090;
+} /* Slate color for rock */
+.scissors {
+  border: 5px solid #ffa07a;
+} /* Light Salmon for scissors */
+.paper {
+  border: 5px solid #90ee90;
+} /* Light green for paper */
+
+.main__middle-container-option:hover {
+  transform: scale(1.05);
+}
 .main__middle-popup-container {
   display: none;
   flex-direction: column-reverse;
@@ -117,7 +126,6 @@ form {
   align-items: center;
   flex-direction: column;
 }
-
 
 footer {
   grid-area: footer;
