@@ -55,10 +55,10 @@ function hideElement(element) {
 // Creates button and returns button, Variables: HTMLparent(required), class(optional), text(optional)
 function createButton(parent, className, text) {
   let newButton = document.createElement("button");
-  if(className){
+  if (className) {
     newButton.className = className;
   }
-  if(text){
+  if (text) {
     newButton.innerText = text;
   }
   parent.appendChild(newButton);
@@ -68,10 +68,10 @@ function createButton(parent, className, text) {
 // Creates element and returns element, variables: HTMLparent(required), element, class(optinal), text(optional)
 function createElement(parent, element, className, text) {
   let newElement = document.createElement(element);
-  if(className){
+  if (className) {
     newElement.className = className;
   }
-  if (text){
+  if (text) {
     newElement.innerText = text;
   }
   parent.appendChild(newElement);
@@ -84,8 +84,6 @@ function removeElement(className) {
   element.remove();
 }
 
-
-
 // Displays winner popup
 const displayWinnerPopup = () => {
   hideElement(gameContainer);
@@ -94,12 +92,14 @@ const displayWinnerPopup = () => {
 
   playerScore > computerScore
     ? createElement(winnerPopup, "h2", "winner", `${playerName} WINS!`)
-    : createElement(winnerPopup, "h2", "winner", `${computerName} WINS!`)
+    : createElement(winnerPopup, "h2", "winner", `${computerName} WINS!`);
 
   playAgain();
 };
 function playerSelectionVSComputerSelection(player, computer) {
-  roundVsDisplay.innerHTML = `<h2> ${playerName} chose ${player}</h2>` + `<h2> ${computerName} chose ${computer}</h2>`;
+  roundVsDisplay.innerHTML =
+    `<h2> ${playerName} chose ${player}</h2>` +
+    `<h2> ${computerName} chose ${computer}</h2>`;
   roundVsDisplay.style.display = "flex";
 }
 
@@ -107,7 +107,12 @@ function playerSelectionVSComputerSelection(player, computer) {
 function displayWinnerRound(winner) {
   winner == "Tie"
     ? createElement(roundVsDisplay, "h2", "winner", "It is a tie")
-    : createElement(roundVsDisplay, "h1", "winner", `${winner} wins this round`);
+    : createElement(
+        roundVsDisplay,
+        "h1",
+        "winner",
+        `${winner} wins this round`
+      );
 }
 
 // Updates score on UI
@@ -121,14 +126,23 @@ const updateScore = () => {
 function showRules() {
   const rulesContainer = createElement(gameContainer, "div", "rules-container");
   createElement(rulesContainer, "h2", "rules-title", "Rules");
-  createElement(rulesContainer, "p", "rules-text", "Rock beats scissors, scissors beats paper, and paper beats rock. First to 3 points wins the game.");
-  const rulesButton = createButton(rulesContainer, "rules-button btn", "I understand");
+  createElement(
+    rulesContainer,
+    "p",
+    "rules-text",
+    "Rock beats scissors, scissors beats paper, and paper beats rock. First to 3 points wins the game."
+  );
+  const rulesButton = createButton(
+    rulesContainer,
+    "rules-button btn",
+    "I understand"
+  );
   //styling
   rulesContainer.style.display = "flex";
   rulesContainer.style.flexDirection = "column";
   rulesContainer.style.alignItems = "center";
   rulesButton.style.width = "100px";
-  hideElement(mainMiddleContainer)
+  hideElement(mainMiddleContainer);
   rulesButton.addEventListener("click", () => {
     rulesContainer.remove();
     displayElement(mainMiddleContainer, "flex");
@@ -154,7 +168,7 @@ function hasWonGame() {
   return playerScore === MAX_SCORE || computerScore === MAX_SCORE;
 }
 
-// Checking for win Round, if true, updates score and false returns string "tie"
+// Checking for win Round, if true, updates score and displays winner of round
 function hasWonRound(winner) {
   if (winner === playerName) {
     playerScore++;
@@ -165,6 +179,7 @@ function hasWonRound(winner) {
   updateScore();
 }
 
+// Play round, sends player and computer choice to determineRoundWinner, sends winner to hasWonRound
 function playRound(player, computer) {
   const winner = determineRoundWinner(player, computer);
   hasWonRound(winner);
@@ -207,17 +222,19 @@ function getPlayerName() {
 
 //Fetching player choice and sends choice to handlePlayerChoice
 function getPlayerChoice() {
-  document.querySelector(".rock.btn").addEventListener("click", () => {
-    playerSelection = "rock";
-    handlePlayerChoice(playerSelection);
-  });
-  document.querySelector(".paper.btn").addEventListener("click", () => {
-    playerSelection = "paper";
-    handlePlayerChoice(playerSelection);
-  });
-  document.querySelector(".scissors.btn").addEventListener("click", () => {
-    playerSelection = "scissors";
-    handlePlayerChoice(playerSelection);
+  const choiceButtons = document.querySelectorAll(
+    ".main__middle-container-choices .btn"
+  );
+
+  choiceButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      playerSelection = button.classList.contains("rock")
+        ? "rock"
+        : button.classList.contains("paper")
+        ? "paper"
+        : "scissors";
+      handlePlayerChoice(playerSelection);
+    });
   });
 }
 
