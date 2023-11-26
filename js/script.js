@@ -85,6 +85,7 @@ function removeElement(className) {
 }
 
 
+
 // Displays winner popup
 const displayWinnerPopup = () => {
   hideElement(gameContainer);
@@ -93,19 +94,20 @@ const displayWinnerPopup = () => {
 
   playerScore > computerScore
     ? createElement(winnerPopup, "h2", "winner", `${playerName} WINS!`)
-    : createElement(winnerPopup, "h2", "winner", "Computer WINS!")
+    : createElement(winnerPopup, "h2", "winner", `${computerName} WINS!`)
 
   playAgain();
 };
 function playerSelectionVSComputerSelection(player, computer) {
-  roundVsDisplay.innerHTML = `<h2><-- ${player} VS ${computer} --></h2>`;
+  roundVsDisplay.innerHTML = `<h2> ${playerName} chose ${player}</h2>` + `<h2> ${computerName} chose ${computer}</h2>`;
+  roundVsDisplay.style.display = "flex";
 }
 
 // Changes VS to winner of round
 function displayWinnerRound(winner) {
   winner == "Tie"
     ? createElement(roundVsDisplay, "h2", "winner", "It is a tie")
-    : createElement(roundVsDisplay, "h2", "winner", `${winner} wins this round`);
+    : createElement(roundVsDisplay, "h1", "winner", `${winner} wins this round`);
 }
 
 // Updates score on UI
@@ -121,7 +123,7 @@ function showRules() {
   createElement(rulesContainer, "h2", "rules-title", "Rules");
   createElement(rulesContainer, "p", "rules-text", "Rock beats scissors, scissors beats paper, and paper beats rock. First to 3 points wins the game.");
   const rulesButton = createButton(rulesContainer, "rules-button btn", "I understand");
-  // Styling
+  //styling
   rulesContainer.style.display = "flex";
   rulesContainer.style.flexDirection = "column";
   rulesContainer.style.alignItems = "center";

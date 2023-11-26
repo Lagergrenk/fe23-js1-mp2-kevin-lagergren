@@ -118,11 +118,6 @@ form {
   flex-direction: column;
 }
 
-aside {
-  grid-area: aside;
-  display: flex;
-  justify-content: center;
-}
 
 footer {
   grid-area: footer;
@@ -138,11 +133,10 @@ footer {
     grid-template-areas:
       "header"
       "main"
-      "aside"
       "footer";
   }
 
-  main, aside {
+  main {
     max-width: 100%;
     padding: 10px;
   }
