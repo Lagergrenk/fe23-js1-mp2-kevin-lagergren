@@ -6,6 +6,7 @@ let playerScore = 0;
 let computerScore = 0;
 let playerSelection = null;
 let playerName = "";
+const computerName = "Computer"; // Can be changed to any name
 
 // Variables for containers in UI for game check index.html for classes
 const gameContainer = document.querySelector(".main__game-container");
@@ -16,6 +17,7 @@ const playerScoreDisplay = document.querySelector(
   ".main__top-container-player-points"
 );
 const playerNameDisplay = document.querySelector(".main__top-player-name");
+const computerNamedisplay = document.querySelector(".main__top-computer-name");
 const computerScoreDisplay = document.querySelector(
   ".main__top-container-computer-points"
 );
@@ -34,6 +36,7 @@ startGameButton.addEventListener("click", (event) => {
 function startGame() {
   playerName = getPlayerName();
   playerNameDisplay.innerText = playerName;
+  computerNamedisplay.innerText = computerName;
   displayElement(gameContainer);
   hideElement(formContainer);
 }
@@ -47,17 +50,39 @@ function hideElement(element) {
   element.style.display = "none";
 }
 
-function createH2Element(parent, text, className) {
-  let h2 = document.createElement("h2");
-  h2.innerText = text;
-  h2.className = className;
-  parent.appendChild(h2);
-  return h2;
+// Creates button and returns button, Variables: HTMLparent(required), class(optional), text(required)
+function createButton(parent, className, text) {
+  let newButton = document.createElement("button");
+  if(className){
+    newButtonbutton.className = className;
+  }
+  newButton.innerText = text;
+  parent.appendChild(button);
+  return button;
 }
 
+// Creates element and returns element, variables: HTMLparent(required), element, class(optinal), text(optional)
+function createElement(parent, element, className, text) {
+  let newElement = document.createElement(element);
+  if(className){
+    newElement.className = className;
+  }
+  if (text){
+    newElement.innerText = text;
+  }
+  parent.appendChild(newElement);
+  return newElement;
+}
+
+// Removes element from DOM
 function removeElement(className) {
   let element = document.querySelector(`.${className}`);
   element.remove();
+}
+
+// Adds style to element
+function addStyle(element, style) {
+  element.style.style = style;
 }
 
 
@@ -68,8 +93,8 @@ const displayWinnerPopup = () => {
   winnerPopup.style.display = "flex";
 
   playerScore > computerScore
-    ? createH2Element(winnerPopup, `${playerName} wins!`, "winner")
-    : createH2Element(winnerPopup, "Computer wins!" , "winner");
+    ? createElement(winnerPopup, "h2", "winner", `${playerName} WINS!`)
+    : createElement(winnerPopup, "h2", "winner", "Computer WINS!")
 
   playAgain();
 };
@@ -80,8 +105,8 @@ function playerSelectionVSComputerSelection(player, computer) {
 // Changes VS to winner of round
 function displayWinnerRound(winner) {
   winner == "Tie"
-    ? createH2Element(roundVsDisplay, "It is a tie !!!")
-    : createH2Element(roundVsDisplay, `${winner} wins this round !!!`);
+    ? createElement(roundVsDisplay, "h2", "winner", "It is a tie")
+    : createElement(roundVsDisplay, "h2", "winner", `${winner} wins this round`);
 }
 
 // Updates score on UI
@@ -103,7 +128,7 @@ const determineRoundWinner = (player, computer) => {
   ) {
     return playerName;
   } else {
-    return "Computer";
+    return computerName;
   }
 };
 
@@ -116,7 +141,7 @@ function hasWonGame() {
 function hasWonRound(winner) {
   if (winner === playerName) {
     playerScore++;
-  } else if (winner === "Computer") {
+  } else if (winner === computerName) {
     computerScore++;
   }
   displayWinnerRound(winner);
@@ -187,5 +212,5 @@ function handlePlayerChoice(choice) {
   playRound(playerSelection, computerSelection);
 }
 
-// Event listener for DOMContentLoaded to start game when page is loaded
+// Event listener for DOMContentLoaded to start game when page is loaded(fixed bug, where 1 click coutned as 2)
 document.addEventListener("DOMContentLoaded", getPlayerChoice);
