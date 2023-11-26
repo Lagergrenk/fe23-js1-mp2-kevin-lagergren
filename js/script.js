@@ -22,17 +22,8 @@ const computerNamedisplay = document.querySelector(".main__top-computer-name");
 const computerScoreDisplay = document.querySelector(
   ".main__top-container-computer-points"
 );
-const playAgainButton = document.querySelector(
-  ".main_middle-popup-container-button.btn"
-);
 
-// Event listener for start game
-const startGameButton = document.querySelector(".main__form-container-button");
-startGameButton.addEventListener("click", (event) => {
-  event.preventDefault(); // Prevents page from reloading, fixed bug
-  startGame();
-});
-
+// --------------------- UI Functions ---------------------
 // Function for starting game, hides form and displays game
 function startGame() {
   playerName = getPlayerName();
@@ -42,87 +33,13 @@ function startGame() {
   showRules();
   hideElement(formContainer);
 }
-
-// --------------------- UI functions ---------------------
 function displayElement(element, style) {
   element.style.display = style || "block";
 }
-
 function hideElement(element) {
   element.style.display = "none";
 }
-
-// Creates button and returns button, Variables: HTMLparent(required), class(optional), text(optional)
-function createButton(parent, className, text) {
-  let newButton = document.createElement("button");
-  if (className) {
-    newButton.className = className;
-  }
-  if (text) {
-    newButton.innerText = text;
-  }
-  parent.appendChild(newButton);
-  return newButton;
-}
-
-// Creates element and returns element, variables: HTMLparent(required), element, class(optinal), text(optional)
-function createElement(parent, element, className, text) {
-  let newElement = document.createElement(element);
-  if (className) {
-    newElement.className = className;
-  }
-  if (text) {
-    newElement.innerText = text;
-  }
-  parent.appendChild(newElement);
-  return newElement;
-}
-
-// Removes element from DOM
-function removeElement(className) {
-  let element = document.querySelector(`.${className}`);
-  element.remove();
-}
-
-// Displays winner popup
-const displayWinnerPopup = () => {
-  hideElement(gameContainer);
-  displayElement(winnerPopup);
-  winnerPopup.style.display = "flex";
-
-  playerScore > computerScore
-    ? createElement(winnerPopup, "h2", "winner", `${playerName} WINS!`)
-    : createElement(winnerPopup, "h2", "winner", `${computerName} WINS!`);
-
-  playAgain();
-};
-function playerSelectionVSComputerSelection(player, computer) {
-  roundVsDisplay.innerHTML =
-    `<h2> ${playerName} chose ${player}</h2>` +
-    `<h2> ${computerName} chose ${computer}</h2>`;
-  roundVsDisplay.style.display = "flex";
-}
-
-// Changes VS to winner of round
-function displayWinnerRound(winner) {
-  winner == "Tie"
-    ? createElement(roundVsDisplay, "h2", "winner", "It is a tie")
-    : createElement(
-        roundVsDisplay,
-        "h1",
-        "winner",
-        `${winner} wins this round`
-      );
-}
-
-// Updates score on UI
-const updateScore = () => {
-  playerScoreDisplay.innerText = playerScore;
-  computerScoreDisplay.innerText = computerScore;
-};
-
-// ---------------------  Game Logic ---------------------
-// show rules
+// show rules creates rules container and displays rules
 function showRules() {
   const rulesContainer = createElement(gameContainer, "div", "rules-container");
   createElement(rulesContainer, "h2", "rules-title", "Rules");
@@ -148,8 +65,50 @@ function showRules() {
     displayElement(mainMiddleContainer, "flex");
   });
 }
+// Reset Game Function
+function resetGame() {
+  playerScore = 0;
+  computerScore = 0;
+  updateScore();
+  hideElement(winnerPopup);
+  displayElement(formContainer);
+  roundVsDisplay.innerHTML = "";
+}
+
+// --------------------- Element Functions ---------------------
+// Creates button and returns button, Variables: HTMLparent(required), class(optional), text(optional)
+function createButton(parent, className, text) {
+  let newButton = document.createElement("button");
+  if (className) {
+    newButton.className = className;
+  }
+  if (text) {
+    newButton.innerText = text;
+  }
+  parent.appendChild(newButton);
+  return newButton;
+}
+// Creates element and returns element, variables: HTMLparent(required), element, class(optinal), text(optional)
+function createElement(parent, element, className, text) {
+  let newElement = document.createElement(element);
+  if (className) {
+    newElement.className = className;
+  }
+  if (text) {
+    newElement.innerText = text;
+  }
+  parent.appendChild(newElement);
+  return newElement;
+}
+// Removes element from DOM
+function removeElement(className) {
+  let element = document.querySelector(`.${className}`);
+  element.remove();
+}
+
+// --------------------- Game Logic ---------------------
 // Logic for determining round winner, returns string ( player, computer or tie )
-const determineRoundWinner = (player, computer) => {
+function determineRoundWinner(player, computer) {
   if (player === computer) {
     return "Tie";
   } else if (
@@ -161,13 +120,11 @@ const determineRoundWinner = (player, computer) => {
   } else {
     return computerName;
   }
-};
-
+}
 // Checking for win player or computer, returns true if points = max_score Returns false if not
 function hasWonGame() {
   return playerScore === MAX_SCORE || computerScore === MAX_SCORE;
 }
-
 // Checking for win Round, if true, updates score and displays winner of round
 function hasWonRound(winner) {
   if (winner === playerName) {
@@ -178,7 +135,6 @@ function hasWonRound(winner) {
   displayWinnerRound(winner);
   updateScore();
 }
-
 // Play round, sends player and computer choice to determineRoundWinner, sends winner to hasWonRound
 function playRound(player, computer) {
   const winner = determineRoundWinner(player, computer);
@@ -187,31 +143,20 @@ function playRound(player, computer) {
     displayWinnerPopup();
   }
 }
-
-// PLay again
-function playAgain() {
-  playAgainButton.addEventListener("click", () => {
-    resetGame();
-    removeElement("winner");
-  });
-}
-
-// Reset Game Function
-function resetGame() {
-  playerScore = 0;
-  computerScore = 0;
-  updateScore();
-  hideElement(winnerPopup);
-  displayElement(formContainer);
-  roundVsDisplay.innerHTML = "";
-}
-
 // Computers Choice Function Returns String ( rock, paper or scissors )
 function getComputerChoice() {
   const options = ["rock", "paper", "scissors"];
   return options[Math.floor(Math.random() * options.length)];
 }
+// Function for handling player choice, sends choice to playRound
+function handlePlayerChoice(choice) {
+  let computerSelection = getComputerChoice();
+  playerSelection = choice;
+  playerSelectionVSComputerSelection(playerSelection, computerSelection);
+  playRound(playerSelection, computerSelection);
+}
 
+// --------------------- Player Functions ---------------------
 // Fetching player name and returns string with name
 function getPlayerName() {
   let playerNameInput = document.querySelector(
@@ -219,13 +164,11 @@ function getPlayerName() {
   ).value;
   return playerNameInput || "Player";
 }
-
 //Fetching player choice and sends choice to handlePlayerChoice
 function getPlayerChoice() {
   const choiceButtons = document.querySelectorAll(
     ".main__middle-container-choices .btn"
   );
-
   choiceButtons.forEach((button) => {
     button.addEventListener("click", () => {
       playerSelection = button.classList.contains("rock")
@@ -238,13 +181,58 @@ function getPlayerChoice() {
   });
 }
 
-// Function for handling player choice, sends choice to playRound
-function handlePlayerChoice(choice) {
-  let computerSelection = getComputerChoice();
-  playerSelection = choice;
-  playerSelectionVSComputerSelection(playerSelection, computerSelection);
-  playRound(playerSelection, computerSelection);
+// --------------------- Display Functions ---------------------
+// Displays winner popup
+function displayWinnerPopup() {
+  hideElement(gameContainer);
+  displayElement(winnerPopup);
+  winnerPopup.style.display = "flex";
+
+  playerScore > computerScore
+    ? createElement(winnerPopup, "h2", "winner", `${playerName} WINS!`)
+    : createElement(winnerPopup, "h2", "winner", `${computerName} WINS!`);
+
+  playAgain();
+}
+function playerSelectionVSComputerSelection(player, computer) {
+  roundVsDisplay.innerHTML =
+    `<h2> ${playerName} chose ${player}</h2>` +
+    `<h2> ${computerName} chose ${computer}</h2>`;
+  roundVsDisplay.style.display = "flex";
+}
+// Changes VS to winner of round
+function displayWinnerRound(winner) {
+  winner == "Tie"
+    ? createElement(roundVsDisplay, "h2", "winner", "It is a tie")
+    : createElement(
+        roundVsDisplay,
+        "h1",
+        "winner",
+        `${winner} wins this round`
+      );
+}
+// Updates score on UI
+function updateScore() {
+  playerScoreDisplay.innerText = playerScore;
+  computerScoreDisplay.innerText = computerScore;
+}
+// PLay again
+function playAgain() {
+  const playAgainButton = document.querySelector(
+    ".main_middle-popup-container-button.btn"
+  );
+  playAgainButton.addEventListener("click", () => {
+    resetGame();
+    removeElement("winner");
+  });
 }
 
+// --------------------- Global Event Listeners ---------------------
 // Event listener for DOMContentLoaded to start game when page is loaded(fixed bug, where 1 click coutned as 2)
 document.addEventListener("DOMContentLoaded", getPlayerChoice);
+// Event listener for start game
+const startGameButton = document.querySelector(".main__form-container-button");
+startGameButton.addEventListener("click", (event) => {
+  event.preventDefault(); // Prevents page from reloading, fixed bug
+  startGame();
+});
