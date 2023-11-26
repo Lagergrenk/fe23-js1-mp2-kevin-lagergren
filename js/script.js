@@ -11,6 +11,7 @@ const computerName = "Computer"; // Can be changed to any name
 // Variables for containers in UI for game check index.html for classes
 const gameContainer = document.querySelector(".main__game-container");
 const formContainer = document.querySelector(".main__form-container");
+const mainMiddleContainer = document.querySelector(".main__middle-container");
 const winnerPopup = document.querySelector(".main__middle-popup-container");
 const roundVsDisplay = document.querySelector(".main__middle-container-vs");
 const playerScoreDisplay = document.querySelector(
@@ -28,7 +29,7 @@ const playAgainButton = document.querySelector(
 // Event listener for start game
 const startGameButton = document.querySelector(".main__form-container-button");
 startGameButton.addEventListener("click", (event) => {
-  event.preventDefault();
+  event.preventDefault(); // Prevents page from reloading, fixed bug
   startGame();
 });
 
@@ -38,27 +39,30 @@ function startGame() {
   playerNameDisplay.innerText = playerName;
   computerNamedisplay.innerText = computerName;
   displayElement(gameContainer);
+  showRules();
   hideElement(formContainer);
 }
 
 // --------------------- UI functions ---------------------
-function displayElement(element) {
-  element.style.display = "block";
+function displayElement(element, style) {
+  element.style.display = style || "block";
 }
 
 function hideElement(element) {
   element.style.display = "none";
 }
 
-// Creates button and returns button, Variables: HTMLparent(required), class(optional), text(required)
+// Creates button and returns button, Variables: HTMLparent(required), class(optional), text(optional)
 function createButton(parent, className, text) {
   let newButton = document.createElement("button");
   if(className){
-    newButtonbutton.className = className;
+    newButton.className = className;
   }
-  newButton.innerText = text;
-  parent.appendChild(button);
-  return button;
+  if(text){
+    newButton.innerText = text;
+  }
+  parent.appendChild(newButton);
+  return newButton;
 }
 
 // Creates element and returns element, variables: HTMLparent(required), element, class(optinal), text(optional)
@@ -78,11 +82,6 @@ function createElement(parent, element, className, text) {
 function removeElement(className) {
   let element = document.querySelector(`.${className}`);
   element.remove();
-}
-
-// Adds style to element
-function addStyle(element, style) {
-  element.style.style = style;
 }
 
 
@@ -116,7 +115,23 @@ const updateScore = () => {
 };
 
 // ---------------------  Game Logic ---------------------
-
+// show rules
+function showRules() {
+  const rulesContainer = createElement(gameContainer, "div", "rules-container");
+  createElement(rulesContainer, "h2", "rules-title", "Rules");
+  createElement(rulesContainer, "p", "rules-text", "Rock beats scissors, scissors beats paper, and paper beats rock. First to 3 points wins the game.");
+  const rulesButton = createButton(rulesContainer, "rules-button btn", "I understand");
+  // Styling
+  rulesContainer.style.display = "flex";
+  rulesContainer.style.flexDirection = "column";
+  rulesContainer.style.alignItems = "center";
+  rulesButton.style.width = "100px";
+  hideElement(mainMiddleContainer)
+  rulesButton.addEventListener("click", () => {
+    rulesContainer.remove();
+    displayElement(mainMiddleContainer, "flex");
+  });
+}
 // Logic for determining round winner, returns string ( player, computer or tie )
 const determineRoundWinner = (player, computer) => {
   if (player === computer) {
