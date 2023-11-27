@@ -61,7 +61,7 @@ function showRules() {
   rulesButton.style.width = "100px";
   hideElement(mainMiddleContainer);
   rulesButton.addEventListener("click", () => {
-    rulesContainer.remove();
+    removeElement("rules-container");
     displayElement(mainMiddleContainer, "flex");
   });
 }
