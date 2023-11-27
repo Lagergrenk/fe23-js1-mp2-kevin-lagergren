@@ -185,6 +185,7 @@ function getPlayerChoice() {
   });
 }
 function isValidName(name) {
+  name = name.trim();
   return name.length > 0;
 }
 
