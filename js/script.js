@@ -88,7 +88,7 @@ function createButton(parent, className, text) {
   parent.appendChild(newButton);
   return newButton;
 }
-// Creates element and returns element, variables: HTMLparent(required), element, class(optinal), text(optional)
+// Creates element and returns element, variables: HTMLparent(required), element(required), class(optinal), text(optional)
 function createElement(parent, element, className, text) {
   let newElement = document.createElement(element);
   if (className) {
