@@ -162,7 +162,11 @@ function getPlayerName() {
   let playerNameInput = document.querySelector(
     ".main__form-container-input"
   ).value;
-  return playerNameInput || "Player";
+  if (isValidName(playerNameInput)) {
+    return playerNameInput;
+  } else {
+    return "Player";
+  }
 }
 //Fetching player choice and sends choice to handlePlayerChoice
 function getPlayerChoice() {
@@ -179,6 +183,9 @@ function getPlayerChoice() {
       handlePlayerChoice(playerSelection);
     });
   });
+}
+function isValidName(name) {
+  return name.length > 0;
 }
 
 // --------------------- Display Functions ---------------------
